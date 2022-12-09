@@ -1,0 +1,12 @@
+.pictures_holder {
+    display: grid;
+    grid-template-columns: 200px 200px;
+}
+
+.title {
+    text-align: center;
+}
+
+#cat_chooser {
+    max-width: 400px;
+}

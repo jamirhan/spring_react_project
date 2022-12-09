@@ -1,0 +1,18 @@
+{
+    "files": [
+        "./components/App.tsx",
+        "./components/Feed.tsx",
+    ],
+    "include": ["./declarations.d.ts"],
+    "compilerOptions": {
+        "outDir": "./dist/",
+        "noImplicitAny": true,
+        "module": "es6",
+        "target": "es5",
+        "sourceMap": true,
+        "jsx": "react",
+        "allowJs": true,
+        "moduleResolution": "node",
+        "lib": ["DOM"]
+    },
+}
