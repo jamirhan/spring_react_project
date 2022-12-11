@@ -9,7 +9,7 @@ export default function Feed(props: FeedProps) {
   let [ids, setIds] = React.useState([]);
   // get text from /api/recordings/my
   React.useEffect(() => {
-    fetch("http://localhost:8080/api/recordings/all", {
+    fetch(AuthService.API_URL + "api/recordings/all", {
       headers: AuthService.authHeader(),
     })
       .then((res) => res.json())

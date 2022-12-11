@@ -29,7 +29,7 @@ export default function RecordButton() {
           let file = new File([raw], "test.flac", { type: "audio/flac" });
           let formData = new FormData();
           formData.append("file", file);
-          fetch("http://localhost:8080/api/recordings/upload", {
+          fetch(AuthService.API_URL + "api/recordings/upload", {
             method: "POST",
             headers: AuthService.authHeader(),
             body: formData,

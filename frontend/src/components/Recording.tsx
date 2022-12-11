@@ -1,4 +1,5 @@
 import * as React from "react";
+import AuthService from "../services/auth"
 
 type RecordingProps = {
   audio_id: number;
@@ -6,7 +7,7 @@ type RecordingProps = {
 export default function Recording(props: RecordingProps) {
   return (
     <audio
-      src={"http://localhost:8080/api/recordings/" + props.audio_id + ".flac"}
+      src={AuthService.API_URL + "api/recordings/" + props.audio_id + ".flac"}
       controls
     />
   );
