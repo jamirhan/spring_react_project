@@ -3,8 +3,12 @@ import { useParams } from "react-router-dom";
 import Recording from "./Recording";
 import Response from "./Response";
 import AuthService from "../services/auth";
+import { Box } from "@mui/system";
+import TextField from "@mui/material/TextField";
+import { Button } from "@mui/material";
+import { Typography } from "@mui/material";
 
-const send_response = async (post_id: number, text: string) => {
+const send_response = (post_id: number, text: string) => {
   let jsontext = JSON.stringify({
     text: text,
     postId: post_id,
@@ -13,7 +17,7 @@ const send_response = async (post_id: number, text: string) => {
 
   console.log("jsontext: " + jsontext);
 
-  await fetch(AuthService.API_URL + "api/responses/new", {
+  fetch(AuthService.API_URL + "api/responses/new", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -27,11 +31,94 @@ const send_response = async (post_id: number, text: string) => {
     });
 };
 
+type ReponseFormProps = {
+  id: number;
+};
+
+function ResponseForm(props: ReponseFormProps) {
+  const [response, setResponse] = React.useState("");
+  return (
+    <Box
+      sx={{
+        height: "50%",
+        alignItems: "center",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+      }}
+      alignContent="center"
+    >
+      <Box
+        sx={{
+          width: "100%",
+          alignItems: "center",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+        }}
+        alignContent="center"
+      >
+        <Box
+          sx={{
+            height: "100%",
+            width: "100%",
+            alignItems: "center",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
+          alignContent="center"
+        >
+          <Box
+            sx={{
+              width: "50%",
+              alignItems: "left",
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "left",
+              alignContent: "left",
+            }}
+          >
+            <Typography variant="h6" sx={{ color: "white" }}>
+              Your answer:
+            </Typography>
+          </Box>
+          <TextField
+            sx={{
+              width: "50%",
+              border: "solid",
+              borderColor: "primary.main",
+              borderRadius: "5px",
+            }}
+            multiline
+            rows={3}
+            inputProps={{ style: { color: "white" } }}
+            onChange={(e) => setResponse(e.target.value)}
+            value={response}
+          ></TextField>
+          <Button
+            variant="outlined"
+            sx={{ margin: "10px 0" }}
+            size="large"
+            onClick={() => {
+              send_response(props.id, response);
+              setResponse("");
+              window.location.reload();
+            }}
+          >
+            Respond
+          </Button>
+        </Box>
+      </Box>
+    </Box>
+  );
+}
+
 export default function Post() {
   let { id } = useParams();
   console.log("id: " + id);
   const [responses, setResponses] = React.useState([]);
-  // get ids from /api/responses/:id
+
   React.useEffect(() => {
     fetch(AuthService.API_URL + "api/responses/" + id)
       .then((res) => res.json())
@@ -41,36 +128,17 @@ export default function Post() {
   }, []);
 
   const [myResponse, setMyResponse] = React.useState("");
+
   return (
-    <div>
+    <>
       <Recording audio_id={+id} />
+      {AuthService.isSignedIn() && <ResponseForm id={+id} />}
+      <Typography align="left" variant="h4">
+        Answers:
+      </Typography>
       {responses.map((response: any) => (
-        <Response from_id={response["ownerId"]} text={response["text"]} />
+        <Response username={response["username"]} text={response["text"]} />
       ))}
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          setMyResponse("");
-          send_response(+id, myResponse).then(() => {
-            // refresh responses
-            fetch(AuthService.API_URL + "api/responses/" + id)
-              .then((res) => res.json())
-              .then((data) => {
-                setResponses(data);
-              });
-          });
-        }}
-      >
-        <input
-          name="email"
-          type="text"
-          onChange={(e) => {
-            setMyResponse(e.target.value);
-          }}
-          value={myResponse}
-        />
-        <button type="submit">Submit</button>
-      </form>
-    </div>
+    </>
   );
 }

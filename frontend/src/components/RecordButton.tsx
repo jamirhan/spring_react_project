@@ -1,9 +1,12 @@
 import * as React from "react";
 import AuthService from "../services/auth";
+import Button from "@mui/material/Button";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 
 export default function RecordButton() {
   const [recorder, setRecorder] = React.useState<MediaRecorder | null>(null);
   const [isRecording, setIsRecording] = React.useState(false);
+  let navigate: NavigateFunction = useNavigate();
   const click = () => {
     console.log("clicked");
     if (isRecording) {
@@ -36,7 +39,8 @@ export default function RecordButton() {
           })
             .then((response) => response.text())
             .then((data) => {
-              console.log(data);
+              navigate(`/${data}`);
+              window.location.reload();
             });
         };
 
@@ -51,8 +55,8 @@ export default function RecordButton() {
     }
   };
   return (
-    <button className="RecordButton" onClick={click}>
+    <Button variant="contained" onClick={click}>
       {isRecording ? "Stop" : "Record"}
-    </button>
+    </Button>
   );
 }

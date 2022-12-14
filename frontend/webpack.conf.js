@@ -36,9 +36,17 @@ module.exports = {
                 test: /\.tsx?$/,
                 use: ['ts-loader'],
             }
-        ]
+        ],
+    },
+    devServer: {
+        historyApiFallback: true,
+        contentBase: './',
+        hot: true
     },
     resolve: {
-        extensions: ['.ts', '.tsx', '.js', '.jsx']
+        extensions: ['.ts', '.tsx', '.js', '.jsx'],
+        alias: {
+            react: path.resolve('./node_modules/react')
+        }
     }
 };

@@ -1,26 +1,41 @@
 import * as React from "react";
 import AuthService from "../services/auth";
-import { useNavigate } from "react-router-dom";
-
+import { Typography } from "@mui/material";
+import { Box } from "@mui/material";
 
 export default function Home() {
-  let [clients, setClients] = React.useState("");
-  let [text, setText] = React.useState("");
-  // get text from /api/test/user
-
-  console.log("HERE:" +  + "api/responses/15");
-  React.useEffect(() => {
-    fetch(AuthService.API_URL + "api/responses/15")
-      .then((res) => res.text())
-      .then((data) => {
-        setText(data);
-      });
-  }, []);
-
   return (
-    <div className="Home">
-      <h1>Home. Home it is</h1>
-    </div>
+    <Box
+      sx={{
+        height: "100%",
+        width: "100%",
+        display: "flex",
+        flexDirection: "row",
+      }}
+      alignItems="center"
+    >
+      <Box
+        sx={{ width: "100%", display: "flex", flexDirection: "column" }}
+        alignItems="center"
+      >
+        <Box sx={{ width: "50%" }}>
+          <Typography variant="h2" align="center">
+            Hello, dear user
+          </Typography>
+          <Typography variant="h6">
+            Welcome to Bofu. Here we all are just mere enjoyers of some
+            good-quality music. Try to guess others' suggestions in "Feed"
+            section or go ahead and ask others what's this melody you're stuck
+            with and don't know the name of in "Ask". Our growing community is
+            over 100M people now, so someone has to respond, right? Alright, I'm
+            gonna leave you alone now. Do whatever you want. Make sure to be
+            logged in though, if you wanna do something meaningful here.
+          </Typography>
+          <Typography variant="h3" align="right">
+            -bbiff
+          </Typography>
+        </Box>
+      </Box>
+    </Box>
   );
-  // }, []);
 }

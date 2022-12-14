@@ -1,12 +1,19 @@
-.pictures_holder {
-    display: grid;
-    grid-template-columns: 200px 200px;
+.split {
+    height: 100%;
+    width: 50%;
+    position: fixed;
+    z-index: -1;
+    top: 0;
+    overflow-x: hidden;
+    padding-top: 20px;
 }
 
-.title {
-    text-align: center;
+.left {
+    left: 0;
+    background-color: #111;
 }
 
-#cat_chooser {
-    max-width: 400px;
+.right {
+    right: 0;
+    background-color: red;
 }

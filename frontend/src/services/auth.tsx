@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://5.188.203.139:8080/";
+const API_URL = "http://localhost:8080/";
 
 const register = (username: string, email: string, password: string) => {
   return axios.post(API_URL + "api/auth/signup", {
@@ -33,6 +33,10 @@ const getCurrentUser = () => {
   return JSON.parse(localStorage.getItem("user") || "{}");
 };
 
+const isSignedIn = () => {
+  return localStorage.getItem("user") !== null;
+};
+
 function authHeader(): HeadersInit {
   const user = JSON.parse(localStorage.getItem("user") || "{}");
 
@@ -53,7 +57,8 @@ const AuthService = {
   logout,
   getCurrentUser,
   authHeader,
-  API_URL
+  isSignedIn,
+  API_URL,
 };
 
 export default AuthService;

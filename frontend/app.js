@@ -1,13 +1,14 @@
-const koa = require("koa");
-const serve = require("koa-static");
-const cors = require("cors");
+const express = require('express');
+const path = require('path');
+const app = express();
+const port = 3000;
 
-// Create a new Koa app with Access-Control-Allow-Origin: *
-const app = new koa();
-app.use(serve("./dist"));
 
-app.use((req, res, next) => {
-    app.use(cors());
+app.use(express.static(`${__dirname}/dist`));
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '/dist/index.html'));
 });
 
-app.listen(3000);
+app.listen(port, () => {
+    console.log(`app listening on port ${port}`)
+});
