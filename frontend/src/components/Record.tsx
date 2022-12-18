@@ -12,13 +12,15 @@ function MicZone() {
   return (
     <Grid
       container
-      sx={{width: "50%",
-      left: "0",
-      height: "100%",
-      backgroundColor: "red",
-      display: "flex",
-      alignItems: "center",
-      borderRadius: "5px"}}
+      sx={{
+        width: "50%",
+        left: "0",
+        height: "100%",
+        backgroundColor: "red",
+        display: "flex",
+        alignItems: "center",
+        borderRadius: "5px",
+      }}
       direction="row"
       alignItems="center"
     >
@@ -49,8 +51,6 @@ function MicZone() {
     </Grid>
   );
 }
-
-
 
 function DropZone() {
   let navigate: NavigateFunction = useNavigate();
@@ -122,12 +122,7 @@ export default function FileUpload() {
   }, []);
 
   return (
-    <Grid
-      container
-      direction="row"
-      alignItems="center"
-      sx={{height: "100%"}}
-    >
+    <Grid container direction="row" alignItems="center" sx={{ height: "100%" }}>
       <MicZone />
       <DropZone />
     </Grid>

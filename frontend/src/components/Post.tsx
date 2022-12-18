@@ -8,7 +8,7 @@ import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
 import { Typography } from "@mui/material";
 
-const send_response = (post_id: number, text: string) => {
+const send_response = async (post_id: number, text: string) => {
   let jsontext = JSON.stringify({
     text: text,
     postId: post_id,
@@ -17,7 +17,7 @@ const send_response = (post_id: number, text: string) => {
 
   console.log("jsontext: " + jsontext);
 
-  fetch(AuthService.API_URL + "api/responses/new", {
+  await fetch(AuthService.API_URL + "api/responses/new", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -101,9 +101,10 @@ function ResponseForm(props: ReponseFormProps) {
             sx={{ margin: "10px 0" }}
             size="large"
             onClick={() => {
-              send_response(props.id, response);
-              setResponse("");
-              window.location.reload();
+              send_response(props.id, response).then(() => {
+                setResponse("");
+                window.location.reload();
+              });
             }}
           >
             Respond
