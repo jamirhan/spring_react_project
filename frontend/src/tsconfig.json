@@ -3,16 +3,19 @@
         "./components/App.tsx",
         "./components/Feed.tsx",
     ],
-    "include": ["./declarations.d.ts"],
+    "include": [
+        "./declarations.d.ts"
+    ],
     "compilerOptions": {
         "outDir": "./dist/",
-        "noImplicitAny": true,
+        "noImplicitAny": false,
         "module": "es6",
         "target": "es5",
         "sourceMap": true,
         "jsx": "react",
         "allowJs": true,
         "moduleResolution": "node",
-        "lib": ["DOM"]
+        "lib": ["es6", "dom"],
+        "allowSyntheticDefaultImports": true,
     },
 }

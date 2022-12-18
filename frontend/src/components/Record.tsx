@@ -1,50 +1,24 @@
 import * as React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import Dropzone from "react-dropzone";
 import { useCallback } from "react";
 import Box from "@mui/material/Box";
 import RecordButton from "./RecordButton";
 import AuthService from "../services/auth";
 import { NavigateFunction, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-
-const useStyles = makeStyles((theme) => ({
-  dropzone: {
-    border: "dashed",
-    borderColor: theme.palette.primary.main,
-    borderRadius: "5px",
-    padding: "20px",
-    margin: "10px 0",
-    textAlign: "center",
-    width: "50%",
-    right: "0",
-    height: "100%",
-    backgroundColor: "blue",
-    display: "flex",
-    alignItems: "center",
-  },
-  miczone: {
-    width: "50%",
-    left: "0",
-    height: "100%",
-    backgroundColor: "red",
-    display: "flex",
-    alignItems: "center",
-    borderRadius: "5px",
-  },
-  commonGrid: {
-    height: "100%",
-  },
-}));
 
 function MicZone() {
-  const classes = useStyles();
   return (
     <Grid
       container
-      className={classes.miczone}
+      sx={{width: "50%",
+      left: "0",
+      height: "100%",
+      backgroundColor: "red",
+      display: "flex",
+      alignItems: "center",
+      borderRadius: "5px"}}
       direction="row"
       alignItems="center"
     >
@@ -76,10 +50,28 @@ function MicZone() {
   );
 }
 
+
+
 function DropZone() {
-  const classes = useStyles();
+  let navigate: NavigateFunction = useNavigate();
+  const upload = (file: File) => {
+    let formData = new FormData();
+    formData.append("file", file);
+    fetch(AuthService.API_URL + "api/recordings/upload", {
+      method: "POST",
+      headers: AuthService.authHeader(),
+      body: formData,
+    })
+      .then((response) => response.text())
+      .then((data) => {
+        navigate(`/${data}`);
+        window.location.reload();
+      });
+  };
   const handleDrop = useCallback((acceptedFiles: any) => {
-    console.log(acceptedFiles);
+    acceptedFiles.forEach((file: File) => {
+      upload(file);
+    });
   }, []);
   return (
     <Dropzone onDrop={handleDrop}>
@@ -87,7 +79,20 @@ function DropZone() {
         <Grid
           container
           {...getRootProps()}
-          className={classes.dropzone}
+          sx={{
+            border: "dashed",
+            borderColor: "black",
+            borderRadius: "5px",
+            padding: "20px",
+            margin: "10px 0",
+            textAlign: "center",
+            width: "50%",
+            right: "0",
+            height: "100%",
+            backgroundColor: "blue",
+            display: "flex",
+            alignItems: "center",
+          }}
           direction="row"
           alignItems="center"
         >
@@ -108,7 +113,6 @@ function DropZone() {
 
 export default function FileUpload() {
   let navigate: NavigateFunction = useNavigate();
-  const classes = useStyles();
   React.useEffect(() => {
     if (!AuthService.isSignedIn()) {
       console.log("Not signed in");
@@ -122,7 +126,7 @@ export default function FileUpload() {
       container
       direction="row"
       alignItems="center"
-      className={classes.commonGrid}
+      sx={{height: "100%"}}
     >
       <MicZone />
       <DropZone />
